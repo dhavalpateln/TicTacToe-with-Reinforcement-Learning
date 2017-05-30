@@ -31,7 +31,7 @@ public class TicTacToe {
         //Agent crossAgent = new Agent(Environment.CROSS, 1, 0.1);
         AgentN circleAgent = new AgentN(Environment.CIRCLE, 2, 0.1);
         AgentN crossAgent = new AgentN(Environment.CROSS, 1, 0.1);
-        while(games < 100000) {
+        while(games < 500000) {
             environment.reset();
             while(environment.gameStatus() == 0) {
                 
@@ -96,12 +96,16 @@ public class TicTacToe {
         Environment environment = Environment.getInstance();
         //Agent circleAgent = new Agent(Environment.CIRCLE, 0, 1);
         AgentN circleAgent = new AgentN(Environment.CIRCLE, 0, 1);
+        if(environment.getTurn() == Environment.CIRCLE){
+            int action = circleAgent.takeAction();
+            environment.action(action);
+        }
         environment.getBoard().addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 int y = me.getX()/100;
                 int x = me.getY()/100;
-                
+                if(environment.getTurn() == Environment.CROSS){
                 environment.action(x,y);
                 int[] s = environment.getState();
                 for(int i = 0; i < 9; i++) {
@@ -119,15 +123,12 @@ public class TicTacToe {
                     else {
                         System.out.println("Draw");
                     }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(TicTacToe.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    sleep();
                     environment.reset();
+                    sleep();
                     
                 }
-                
+                sleep();
                 //Comp action
                 int action = circleAgent.takeAction();
                 environment.action(action);
@@ -142,13 +143,11 @@ public class TicTacToe {
                     else {
                         System.out.println("Draw");
                     }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(TicTacToe.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    sleep();
                     environment.reset();
+                    sleep();
                     
+                }
                 }
             }
 
@@ -169,5 +168,13 @@ public class TicTacToe {
             }
         });
         
+    }
+    
+    public static void sleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TicTacToe.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
